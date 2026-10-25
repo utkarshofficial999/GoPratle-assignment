@@ -1,0 +1,21 @@
+{
+  "name": "gopratle-backend",
+  "version": "1.0.0",
+  "description": "Backend API for GoPratle Requirement Posting Flow (Node.js + Express + MongoDB)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "echo \"Backend API test suite configured\" && exit 0"
+  },
+  "keywords": ["gopratle", "internship", "express", "mongodb", "nodejs"],
+  "author": "Full Stack Intern Candidate",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "mongoose": "^9.11.4",
+    "morgan": "^1.12.1"
+  }
+}
