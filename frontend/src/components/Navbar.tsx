@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Sparkles,
-  Layers,
   CalendarCheck2,
+  Layers,
+  ChevronDown,
+  Database,
   CheckCircle2,
   AlertCircle,
-  Database,
-  ChevronDown
+  FileSpreadsheet
 } from 'lucide-react';
 import { requirementApi, samplePresets } from '../services/api';
 import { EventCategory, RequirementFormData } from '../types/requirement';
@@ -61,83 +61,97 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header style={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 50,
-      background: 'rgba(10, 13, 20, 0.85)',
-      backdropFilter: 'blur(16px)',
-      borderBottom: '1px solid var(--border-subtle)',
-      padding: '14px 0'
-    }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <header
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid var(--border-subtle)',
+        boxShadow: 'var(--shadow-xs)'
+      }}
+    >
+      <div
+        className="container"
+        style={{
+          height: '56px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+      >
         {/* Brand Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => setActiveTab('wizard')}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '12px',
-            background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 14px rgba(99, 102, 241, 0.35)'
-          }}>
-            <Sparkles size={22} color="#ffffff" />
+        <div
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+          onClick={() => setActiveTab('wizard')}
+        >
+          <div
+            style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '6px',
+              backgroundColor: '#0f172a',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#ffffff',
+              fontWeight: 700,
+              fontSize: '0.875rem'
+            }}
+          >
+            G
           </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#ffffff' }}>
-                Go<span style={{ color: '#818cf8' }}>Pratle</span>
-              </span>
-              <span style={{
-                fontSize: '0.65rem',
-                fontWeight: 700,
-                padding: '2px 7px',
-                borderRadius: '6px',
-                background: 'rgba(99, 102, 241, 0.15)',
-                color: '#a5b4fc',
-                border: '1px solid rgba(99, 102, 241, 0.3)',
-                textTransform: 'uppercase'
-              }}>
-                Talent Flow
-              </span>
-            </div>
-            <p style={{ fontSize: '0.72rem', color: 'var(--text-dim)', margin: 0 }}>
-              Event Requirement & Hiring Portal
-            </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '1rem', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-main)' }}>
+              GoPratle
+            </span>
+            <span
+              style={{
+                fontSize: '0.688rem',
+                fontWeight: 600,
+                padding: '2px 6px',
+                borderRadius: '4px',
+                backgroundColor: 'var(--bg-subtle)',
+                color: 'var(--text-muted)',
+                border: '1px solid var(--border-subtle)'
+              }}
+            >
+              Talent Flow
+            </span>
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <nav style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: 'rgba(17, 23, 38, 0.7)',
-          padding: '4px',
-          borderRadius: '12px',
-          border: '1px solid var(--border-subtle)'
-        }}>
+        {/* Center: Segmented Navigation Switcher */}
+        <nav
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: 'var(--bg-subtle)',
+            padding: '3px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid var(--border-subtle)'
+          }}
+        >
           <button
             onClick={() => setActiveTab('wizard')}
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              padding: '8px 18px',
-              borderRadius: '9px',
+              gap: '6px',
+              padding: '5px 12px',
+              borderRadius: 'var(--radius-xs)',
               border: 'none',
-              background: activeTab === 'wizard' ? 'var(--primary)' : 'transparent',
-              color: activeTab === 'wizard' ? '#ffffff' : 'var(--text-muted)',
-              fontSize: '0.875rem',
-              fontWeight: 600,
+              backgroundColor: activeTab === 'wizard' ? '#ffffff' : 'transparent',
+              color: activeTab === 'wizard' ? 'var(--text-main)' : 'var(--text-muted)',
+              fontSize: '0.813rem',
+              fontWeight: activeTab === 'wizard' ? 600 : 500,
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: activeTab === 'wizard' ? '0 2px 8px var(--primary-glow)' : 'none'
+              boxShadow: activeTab === 'wizard' ? 'var(--shadow-xs)' : 'none',
+              transition: 'all var(--transition-fast)'
             }}
           >
-            <CalendarCheck2 size={16} />
-            Post Requirement
+            <CalendarCheck2 size={14} />
+            <span>Post Requirement</span>
           </button>
 
           <button
@@ -145,57 +159,56 @@ export const Navbar: React.FC<NavbarProps> = ({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              padding: '8px 18px',
-              borderRadius: '9px',
+              gap: '6px',
+              padding: '5px 12px',
+              borderRadius: 'var(--radius-xs)',
               border: 'none',
-              background: activeTab === 'explorer' ? 'var(--primary)' : 'transparent',
-              color: activeTab === 'explorer' ? '#ffffff' : 'var(--text-muted)',
-              fontSize: '0.875rem',
-              fontWeight: 600,
+              backgroundColor: activeTab === 'explorer' ? '#ffffff' : 'transparent',
+              color: activeTab === 'explorer' ? 'var(--text-main)' : 'var(--text-muted)',
+              fontSize: '0.813rem',
+              fontWeight: activeTab === 'explorer' ? 600 : 500,
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: activeTab === 'explorer' ? '0 2px 8px var(--primary-glow)' : 'none'
+              boxShadow: activeTab === 'explorer' ? 'var(--shadow-xs)' : 'none',
+              transition: 'all var(--transition-fast)'
             }}
           >
-            <Layers size={16} />
-            View Requirements
+            <Layers size={14} />
+            <span>Requirements</span>
             {requirementCount > 0 && (
-              <span style={{
-                background: activeTab === 'explorer' ? 'rgba(255, 255, 255, 0.25)' : 'rgba(99, 102, 241, 0.2)',
-                color: activeTab === 'explorer' ? '#ffffff' : '#818cf8',
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                padding: '1px 6px',
-                borderRadius: '9999px',
-                marginLeft: '2px'
-              }}>
+              <span
+                style={{
+                  backgroundColor: activeTab === 'explorer' ? 'var(--bg-subtle)' : '#e2e8f0',
+                  color: 'var(--text-muted)',
+                  fontSize: '0.688rem',
+                  fontWeight: 600,
+                  padding: '1px 5px',
+                  borderRadius: '999px',
+                  marginLeft: '2px'
+                }}
+              >
                 {requirementCount}
               </span>
             )}
           </button>
         </nav>
 
-        {/* Right Action: Demo Preset Filler & DB Status */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          {/* Preset Menu Dropdown */}
+        {/* Right: Presets & Live DB Status */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Preset Dropdown */}
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => setShowPresetMenu(!showPresetMenu)}
               className="btn btn-secondary"
               style={{
-                fontSize: '0.8rem',
-                padding: '7px 13px',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
+                fontSize: '0.75rem',
+                padding: '5px 10px',
+                height: '30px'
               }}
-              title="Quickly fill form with pre-configured sample data for instant evaluation"
+              title="Fill form with sample data for quick evaluation"
             >
-              <Sparkles size={14} color="#818cf8" />
+              <FileSpreadsheet size={13} style={{ color: 'var(--text-muted)' }} />
               <span>Fill Sample Data</span>
-              <ChevronDown size={14} />
+              <ChevronDown size={13} />
             </button>
 
             {showPresetMenu && (
@@ -205,37 +218,46 @@ export const Navbar: React.FC<NavbarProps> = ({
                   right: 0,
                   top: '115%',
                   width: '210px',
-                  background: 'var(--bg-dark-card)',
+                  backgroundColor: '#ffffff',
                   border: '1px solid var(--border-subtle)',
-                  borderRadius: '12px',
+                  borderRadius: 'var(--radius-md)',
                   boxShadow: 'var(--shadow-lg)',
-                  padding: '6px',
+                  padding: '4px',
                   zIndex: 100
                 }}
               >
-                <div style={{ padding: '6px 10px', fontSize: '0.72rem', color: 'var(--text-dim)', textTransform: 'uppercase', fontWeight: 700 }}>
-                  Select Sample Scenario:
+                <div
+                  style={{
+                    padding: '6px 10px',
+                    fontSize: '0.688rem',
+                    color: 'var(--text-dim)',
+                    textTransform: 'uppercase',
+                    fontWeight: 600,
+                    letterSpacing: '0.04em'
+                  }}
+                >
+                  Evaluation Presets
                 </div>
                 <button
                   onClick={() => handleSelectPreset('planner')}
                   style={{
                     width: '100%',
                     textAlign: 'left',
-                    padding: '8px 10px',
-                    borderRadius: '7px',
+                    padding: '6px 10px',
+                    borderRadius: 'var(--radius-xs)',
                     border: 'none',
-                    background: 'transparent',
+                    backgroundColor: 'transparent',
                     color: 'var(--text-main)',
-                    fontSize: '0.83rem',
+                    fontSize: '0.813rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px'
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-subtle)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--planner-color)' }}></span>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--planner-color)' }}></span>
                   Planner (Fintech Summit)
                 </button>
                 <button
@@ -243,21 +265,21 @@ export const Navbar: React.FC<NavbarProps> = ({
                   style={{
                     width: '100%',
                     textAlign: 'left',
-                    padding: '8px 10px',
-                    borderRadius: '7px',
+                    padding: '6px 10px',
+                    borderRadius: 'var(--radius-xs)',
                     border: 'none',
-                    background: 'transparent',
+                    backgroundColor: 'transparent',
                     color: 'var(--text-main)',
-                    fontSize: '0.83rem',
+                    fontSize: '0.813rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px'
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(168, 85, 247, 0.1)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-subtle)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--performer-color)' }}></span>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--performer-color)' }}></span>
                   Performer (Concert Band)
                 </button>
                 <button
@@ -265,22 +287,22 @@ export const Navbar: React.FC<NavbarProps> = ({
                   style={{
                     width: '100%',
                     textAlign: 'left',
-                    padding: '8px 10px',
-                    borderRadius: '7px',
+                    padding: '6px 10px',
+                    borderRadius: 'var(--radius-xs)',
                     border: 'none',
-                    background: 'transparent',
+                    backgroundColor: 'transparent',
                     color: 'var(--text-main)',
-                    fontSize: '0.83rem',
+                    fontSize: '0.813rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px'
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(245, 158, 11, 0.1)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-subtle)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--crew-color)' }}></span>
-                  Crew (Fashion Week Team)
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--crew-color)' }}></span>
+                  Crew (Production Team)
                 </button>
               </div>
             )}
@@ -292,23 +314,25 @@ export const Navbar: React.FC<NavbarProps> = ({
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px 11px',
-              borderRadius: '9999px',
-              background: 'rgba(13, 18, 30, 0.9)',
+              padding: '4px 8px',
+              borderRadius: 'var(--radius-xs)',
+              backgroundColor: 'var(--bg-subtle)',
               border: '1px solid var(--border-subtle)',
               fontSize: '0.75rem',
               color: 'var(--text-muted)'
             }}
           >
-            <Database size={13} color="#818cf8" />
-            <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>
-              {dbStatus.mode === 'mongodb' ? 'MongoDB' : 'Live Store'}
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: dbStatus.connected ? '#10b981' : '#f59e0b'
+              }}
+            />
+            <span style={{ fontWeight: 500, color: 'var(--text-body)' }}>
+              {dbStatus.mode === 'mongodb' ? 'MongoDB Atlas' : 'In-Memory Store'}
             </span>
-            {dbStatus.connected ? (
-              <CheckCircle2 size={13} color="#10b981" />
-            ) : (
-              <AlertCircle size={13} color="#f59e0b" />
-            )}
           </div>
         </div>
       </div>

@@ -256,7 +256,7 @@ export default function Home() {
       />
 
       {/* Main Content Area */}
-      <main style={{ flex: 1, padding: '36px 0 60px 0' }}>
+      <main style={{ flex: 1, padding: '28px 0 48px 0' }}>
         <div className="container">
           {activeTab === 'explorer' ? (
             <RequirementsExplorer onPostNew={() => setActiveTab('wizard')} />
@@ -315,8 +315,8 @@ export default function Home() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  marginTop: '28px',
-                  paddingTop: '20px',
+                  marginTop: '20px',
+                  paddingTop: '16px',
                   borderTop: '1px solid var(--border-subtle)'
                 }}>
                   {currentStep > 1 ? (
@@ -325,8 +325,8 @@ export default function Home() {
                       onClick={handleBack}
                       className="btn btn-secondary"
                     >
-                      <ArrowLeft size={16} />
-                      Back to Step {currentStep - 1}
+                      <ArrowLeft size={14} />
+                      Back
                     </button>
                   ) : (
                     <div />
@@ -336,10 +336,10 @@ export default function Home() {
                     type="button"
                     onClick={handleNext}
                     className="btn btn-primary"
-                    style={{ padding: '12px 28px' }}
+                    style={{ padding: '9px 20px' }}
                   >
                     <span>
-                      Proceed to Step {currentStep + 1}:{' '}
+                      Continue to Step {currentStep + 1}:{' '}
                       {currentStep === 1 &&
                         (formData.category === 'planner'
                           ? 'Planning Scope'
@@ -349,7 +349,7 @@ export default function Home() {
                       {currentStep === 2 && 'Logistics & Budget'}
                       {currentStep === 3 && 'Final Review'}
                     </span>
-                    <ArrowRight size={16} />
+                    <ArrowRight size={14} />
                   </button>
                 </div>
               )}
@@ -367,22 +367,24 @@ export default function Home() {
         />
       )}
 
-      {/* Footer */}
+      {/* Clean Minimalist Footer */}
       <footer style={{
         borderTop: '1px solid var(--border-subtle)',
-        background: 'rgba(10, 13, 20, 0.8)',
-        padding: '24px 0',
-        textAlign: 'center',
-        fontSize: '0.82rem',
-        color: 'var(--text-dim)'
+        backgroundColor: '#ffffff',
+        padding: '16px 0',
+        fontSize: '0.813rem',
+        color: 'var(--text-muted)'
       }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
           <div>
-            Built with <strong>Next.js (App Router)</strong> & <strong>Node.js + Express + MongoDB</strong> for GoPratle
+            GoPratle Talent Flow • Event Requirement Engine
           </div>
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <span>REST API: <code style={{ color: '#818cf8' }}>/api/requirements</code></span>
-            <span>Status: <span style={{ color: '#10b981' }}>Active</span></span>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <span>Next.js 15 & Node.js + Express + MongoDB</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10b981' }} />
+              API Ready
+            </span>
           </div>
         </div>
       </footer>

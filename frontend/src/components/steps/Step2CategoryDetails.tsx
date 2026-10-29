@@ -9,7 +9,6 @@ import {
   Minus,
   Trash2,
   Clock,
-  Layers,
   Award
 } from 'lucide-react';
 import {
@@ -112,35 +111,46 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
   };
 
   // Crew handlers
+  const addCrewRole = (roleTitle: string) => {
+    const currentRoles = [...formData.crewDetails.roles];
+    const existing = currentRoles.find((r) => r.role === roleTitle);
+    if (existing) {
+      existing.count = (existing.count || 1) + 1;
+      updateFormData({
+        crewDetails: { ...formData.crewDetails, roles: currentRoles }
+      });
+    } else {
+      updateFormData({
+        crewDetails: {
+          ...formData.crewDetails,
+          roles: [
+            ...currentRoles,
+            { role: roleTitle, count: 1, experienceLevel: 'mid' }
+          ]
+        }
+      });
+    }
+  };
+
   const updateCrewRoleCount = (index: number, delta: number) => {
     const roles = [...formData.crewDetails.roles];
-    if (roles[index]) {
-      const newCount = Math.max(1, (roles[index].count || 1) + delta);
-      roles[index] = { ...roles[index], count: newCount };
+    if (!roles[index]) return;
+    const newCount = (roles[index].count || 1) + delta;
+    if (newCount > 0) {
+      roles[index].count = newCount;
       updateFormData({
         crewDetails: { ...formData.crewDetails, roles }
       });
     }
   };
 
-  const updateCrewRoleExp = (index: number, exp: 'junior' | 'mid' | 'senior' | 'lead') => {
+  const updateCrewRoleExp = (index: number, level: 'junior' | 'mid' | 'senior' | 'lead') => {
     const roles = [...formData.crewDetails.roles];
-    if (roles[index]) {
-      roles[index] = { ...roles[index], experienceLevel: exp };
-      updateFormData({
-        crewDetails: { ...formData.crewDetails, roles }
-      });
-    }
-  };
-
-  const addCrewRole = (roleName: string) => {
-    const roles = [...formData.crewDetails.roles];
-    if (!roles.some((r) => r.role === roleName)) {
-      roles.push({ role: roleName, count: 1, experienceLevel: 'mid' });
-      updateFormData({
-        crewDetails: { ...formData.crewDetails, roles }
-      });
-    }
+    if (!roles[index]) return;
+    roles[index].experienceLevel = level;
+    updateFormData({
+      crewDetails: { ...formData.crewDetails, roles }
+    });
   };
 
   const removeCrewRole = (index: number) => {
@@ -153,25 +163,22 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
   return (
     <div className="animate-fade-in">
       {/* Category Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <h1 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>
               Step 2: {category === 'planner' && 'Planning Scope & Scale'}
-              {category === 'performer' && 'Performance Style & Set Details'}
-              {category === 'crew' && 'Crew Headcount & Roles'}
-            </h2>
-            <span
-              className={`badge badge-${category}`}
-              style={{ fontSize: '0.75rem', padding: '4px 10px' }}
-            >
+              {category === 'performer' && 'Performance & Repertoire'}
+              {category === 'crew' && 'Crew Roles & Headcount'}
+            </h1>
+            <span className={`badge badge-${category}`}>
               {category.toUpperCase()}
             </span>
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            {category === 'planner' && 'Define the deliverables, guest size, and styling scope expected from your Event Planner.'}
-            {category === 'performer' && 'Specify the performer genre, act duration, and performance style needed for your stage.'}
-            {category === 'crew' && 'Add production crew roles, assign quantities and experience tiers needed for the event.'}
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+            {category === 'planner' && 'Define deliverables, guest count tier, and thematic scope for your Event Planner.'}
+            {category === 'performer' && 'Select the act type, performance duration, sets, and musical genres.'}
+            {category === 'crew' && 'Specify crew positions, required experience levels, and headcount.'}
           </p>
         </div>
       </div>
@@ -180,14 +187,14 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
       {/* CASE A: PLANNER ADAPTIVE FIELDS                                          */}
       {/* ========================================================================= */}
       {category === 'planner' && (
-        <div className="glass-panel" style={{ padding: '28px', borderLeft: '4px solid var(--planner-color)' }}>
+        <div className="card-panel" style={{ padding: '24px' }}>
           {/* Services Checklist */}
           <div style={{ marginBottom: '24px' }}>
-            <label className="form-label" style={{ marginBottom: '10px' }}>
-              <Sparkles size={16} color="var(--planner-color)" />
-              Planning Services Required
+            <label className="form-label" style={{ marginBottom: '6px' }}>
+              <Sparkles size={15} style={{ color: 'var(--planner-color)' }} />
+              <span>Planning Services Required</span>
             </label>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '12px' }}>
+            <p style={{ fontSize: '0.813rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
               Select all responsibilities you want the event planning team to manage:
             </p>
             <div className="chip-grid">
@@ -198,7 +205,15 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                     key={service}
                     onClick={() => togglePlannerService(service)}
                     className={`chip ${isSelected ? 'active' : ''}`}
-                    style={isSelected ? { background: 'rgba(16, 185, 129, 0.15)', borderColor: 'var(--planner-color)' } : {}}
+                    style={
+                      isSelected
+                        ? {
+                            backgroundColor: 'var(--planner-subtle)',
+                            borderColor: 'var(--planner-color)',
+                            color: 'var(--planner-color)'
+                          }
+                        : {}
+                    }
                   >
                     {service}
                   </div>
@@ -209,15 +224,20 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
 
           {/* Guest Count Tier */}
           <div style={{ marginBottom: '24px', paddingTop: '20px', borderTop: '1px solid var(--border-subtle)' }}>
-            <label className="form-label" style={{ marginBottom: '10px' }}>
-              <Users size={16} color="var(--planner-color)" />
-              Expected Guest Count Tier
+            <label className="form-label" style={{ marginBottom: '6px' }}>
+              <Users size={15} style={{ color: 'var(--planner-color)' }} />
+              <span>Expected Guest Count Tier</span>
             </label>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
-              gap: '12px'
-            }}>
+            <p style={{ fontSize: '0.813rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+              Helps planners size their coordination team and vendor allocations:
+            </p>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: '10px'
+              }}
+            >
               {guestCountTiers.map((tier) => {
                 const isSelected = formData.plannerDetails.guestCount === tier.value;
                 return (
@@ -232,19 +252,19 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                       })
                     }
                     style={{
-                      padding: '14px',
-                      borderRadius: 'var(--radius-md)',
-                      background: isSelected ? 'rgba(16, 185, 129, 0.15)' : 'var(--bg-dark-card)',
-                      border: isSelected ? '1.5px solid var(--planner-color)' : '1px solid var(--border-subtle)',
+                      padding: '12px',
+                      borderRadius: 'var(--radius-sm)',
+                      backgroundColor: isSelected ? 'var(--planner-subtle)' : '#ffffff',
+                      border: isSelected ? '1.5px solid var(--planner-color)' : '1px solid var(--border-default)',
                       cursor: 'pointer',
                       textAlign: 'center',
-                      transition: 'all 0.2s ease'
+                      transition: 'all var(--transition-fast)'
                     }}
                   >
-                    <div style={{ fontSize: '0.95rem', fontWeight: 700, color: isSelected ? '#ffffff' : 'var(--text-main)', marginBottom: '2px' }}>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 600, color: isSelected ? 'var(--planner-color)' : 'var(--text-main)', marginBottom: '2px' }}>
                       {tier.label}
                     </div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                       {tier.desc}
                     </div>
                   </div>
@@ -255,13 +275,13 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
 
           {/* Theme & Decor Preferences */}
           <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
               <div className="form-group" style={{ margin: 0 }}>
                 <label className="form-label">Theme / Aesthetic Concept</label>
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="e.g. Traditional Royal Rajputana, Cyberpunk Neon, Classic White Elegance"
+                  placeholder="e.g. Modern Minimalist, Traditional Elegance"
                   value={formData.plannerDetails.themePreference}
                   onChange={(e) =>
                     updateFormData({
@@ -279,7 +299,7 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="e.g. Floral arches, fairy lights canopy, LED wall with live streaming"
+                  placeholder="e.g. Curved LED backdrop, warm ambient spotlights"
                   value={formData.plannerDetails.decorStyle}
                   onChange={(e) =>
                     updateFormData({
@@ -300,13 +320,13 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
       {/* CASE B: PERFORMER ADAPTIVE FIELDS                                        */}
       {/* ========================================================================= */}
       {category === 'performer' && (
-        <div className="glass-panel" style={{ padding: '28px', borderLeft: '4px solid var(--performer-color)' }}>
+        <div className="card-panel" style={{ padding: '24px' }}>
           {/* Performer Act Selection */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px', marginBottom: '20px' }}>
             <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">
-                <Music size={16} color="var(--performer-color)" />
-                Performer Role / Type of Act <span className="required">*</span>
+                <Music size={15} style={{ color: 'var(--performer-color)' }} />
+                <span>Performer Act / Role</span> <span className="required">*</span>
               </label>
               <select
                 className="form-select"
@@ -330,10 +350,10 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
 
             <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">
-                <Clock size={16} color="var(--performer-color)" />
-                Performance Duration & Sets
+                <Clock size={15} style={{ color: 'var(--performer-color)' }} />
+                <span>Performance Duration & Sets</span>
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px' }}>
                 <select
                   className="form-select"
                   value={formData.performerDetails.performanceDuration}
@@ -351,11 +371,11 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                   <option value="90 mins">90 mins (1.5 hours)</option>
                   <option value="2 hours">2 hours</option>
                   <option value="3+ hours">3+ hours</option>
-                  <option value="Multiple sets">Multiple Sets throughout evening</option>
+                  <option value="Multiple sets">Multiple Sets</option>
                 </select>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(13, 18, 30, 0.8)', padding: '0 12px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Sets:</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#ffffff', padding: '0 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-default)' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Sets:</span>
                   <input
                     type="number"
                     min={1}
@@ -370,12 +390,12 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                       })
                     }
                     style={{
-                      width: '45px',
-                      background: 'transparent',
+                      width: '36px',
+                      backgroundColor: 'transparent',
                       border: 'none',
-                      color: '#ffffff',
-                      fontSize: '0.9rem',
-                      fontWeight: 700,
+                      color: 'var(--text-main)',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
                       textAlign: 'center',
                       outline: 'none'
                     }}
@@ -387,12 +407,11 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
 
           {/* Genres Chips */}
           <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)' }}>
-            <label className="form-label" style={{ marginBottom: '10px' }}>
-              <Layers size={16} color="var(--performer-color)" />
-              Musical / Act Genres & Style
+            <label className="form-label" style={{ marginBottom: '6px' }}>
+              Musical & Act Genres
             </label>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '12px' }}>
-              Select all genres suitable for your audience:
+            <p style={{ fontSize: '0.813rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+              Select genres that match your event audience:
             </p>
             <div className="chip-grid">
               {genreChips.map((genre) => {
@@ -402,7 +421,15 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                     key={genre}
                     onClick={() => toggleGenre(genre)}
                     className={`chip ${isSelected ? 'active' : ''}`}
-                    style={isSelected ? { background: 'rgba(168, 85, 247, 0.15)', borderColor: 'var(--performer-color)' } : {}}
+                    style={
+                      isSelected
+                        ? {
+                            backgroundColor: 'var(--performer-subtle)',
+                            borderColor: 'var(--performer-color)',
+                            color: 'var(--performer-color)'
+                          }
+                        : {}
+                    }
                   >
                     {genre}
                   </div>
@@ -417,24 +444,24 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
       {/* CASE C: CREW ADAPTIVE FIELDS                                             */}
       {/* ========================================================================= */}
       {category === 'crew' && (
-        <div className="glass-panel" style={{ padding: '28px', borderLeft: '4px solid var(--crew-color)' }}>
+        <div className="card-panel" style={{ padding: '24px' }}>
           {/* Roles List */}
           <div style={{ marginBottom: '24px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
               <label className="form-label" style={{ margin: 0 }}>
-                <Users size={16} color="var(--crew-color)" />
-                Crew Roles & Headcount Builder
+                <Users size={15} style={{ color: 'var(--crew-color)' }} />
+                <span>Crew Positions & Scale</span>
               </label>
-              <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
-                Total Crew Members:{' '}
-                <strong style={{ color: 'var(--crew-color)' }}>
-                  {formData.crewDetails.roles.reduce((acc, r) => acc + (r.count || 1), 0)}
+              <span style={{ fontSize: '0.813rem', color: 'var(--text-muted)' }}>
+                Total Headcount:{' '}
+                <strong style={{ color: 'var(--text-main)' }}>
+                  {formData.crewDetails.roles.reduce((acc, r) => acc + (r.count || 1), 0)} members
                 </strong>
               </span>
             </div>
 
             {/* Quick Add Presets */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '18px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
                 Quick add:
               </span>
@@ -444,29 +471,32 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                   type="button"
                   onClick={() => addCrewRole(tpl)}
                   className="btn btn-secondary"
-                  style={{ fontSize: '0.74rem', padding: '4px 10px', borderRadius: '6px' }}
+                  style={{ fontSize: '0.75rem', padding: '3px 8px', borderRadius: 'var(--radius-xs)' }}
                 >
-                  <Plus size={12} />
+                  <Plus size={11} />
                   {tpl}
                 </button>
               ))}
             </div>
 
-            {/* Active Crew Roles Table/Card List */}
+            {/* Active Crew Roles Card List */}
             {formData.crewDetails.roles.length === 0 ? (
-              <div style={{
-                padding: '24px',
-                textAlign: 'center',
-                background: 'rgba(13, 18, 30, 0.6)',
-                borderRadius: 'var(--radius-md)',
-                border: '1px dashed var(--border-subtle)'
-              }}>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '8px' }}>
-                  No crew roles added yet. Click on any quick add button above to add roles!
+              <div
+                style={{
+                  padding: '24px',
+                  textAlign: 'center',
+                  backgroundColor: 'var(--bg-subtle)',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px dashed var(--border-default)'
+                }}
+              >
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.813rem', margin: 0 }}>
+                  No crew roles added yet. Click any quick-add button above to populate roles.
                 </p>
+                {errors.crewRoles && <span className="error-text" style={{ justifyContent: 'center', marginTop: '6px' }}>{errors.crewRoles}</span>}
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {formData.crewDetails.roles.map((roleItem, idx) => (
                   <div
                     key={idx}
@@ -474,35 +504,35 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      background: 'rgba(13, 18, 30, 0.8)',
-                      padding: '12px 18px',
-                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--bg-subtle)',
+                      padding: '10px 14px',
+                      borderRadius: 'var(--radius-sm)',
                       border: '1px solid var(--border-subtle)'
                     }}
                   >
                     {/* Role Title */}
                     <div style={{ flex: 1, minWidth: '180px' }}>
-                      <div style={{ fontWeight: 600, fontSize: '0.92rem', color: '#ffffff' }}>
+                      <div style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--text-main)' }}>
                         {roleItem.role}
                       </div>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
+                      <span style={{ fontSize: '0.688rem', color: 'var(--text-muted)' }}>
                         Position #{idx + 1}
                       </span>
                     </div>
 
                     {/* Experience Tier Selector */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginRight: '20px' }}>
-                      <Award size={14} color="var(--text-dim)" />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginRight: '16px' }}>
+                      <Award size={13} style={{ color: 'var(--text-muted)' }} />
                       <select
                         value={roleItem.experienceLevel}
                         onChange={(e) => updateCrewRoleExp(idx, e.target.value as any)}
                         style={{
-                          background: 'var(--bg-dark-card)',
+                          backgroundColor: '#ffffff',
                           color: 'var(--text-main)',
-                          border: '1px solid var(--border-subtle)',
-                          borderRadius: '6px',
-                          padding: '4px 8px',
-                          fontSize: '0.78rem',
+                          border: '1px solid var(--border-default)',
+                          borderRadius: 'var(--radius-xs)',
+                          padding: '4px 6px',
+                          fontSize: '0.75rem',
                           outline: 'none'
                         }}
                       >
@@ -515,42 +545,44 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
 
                     {/* Counter Buttons */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        background: 'var(--bg-dark-card)',
-                        borderRadius: '8px',
-                        border: '1px solid var(--border-subtle)',
-                        overflow: 'hidden'
-                      }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          backgroundColor: '#ffffff',
+                          borderRadius: 'var(--radius-xs)',
+                          border: '1px solid var(--border-default)',
+                          overflow: 'hidden'
+                        }}
+                      >
                         <button
                           type="button"
                           onClick={() => updateCrewRoleCount(idx, -1)}
                           style={{
-                            background: 'transparent',
+                            backgroundColor: 'transparent',
                             border: 'none',
                             color: 'var(--text-muted)',
-                            padding: '6px 10px',
+                            padding: '4px 8px',
                             cursor: 'pointer'
                           }}
                         >
-                          <Minus size={14} />
+                          <Minus size={12} />
                         </button>
-                        <span style={{ minWidth: '28px', textAlign: 'center', fontWeight: 700, fontSize: '0.88rem' }}>
+                        <span style={{ minWidth: '24px', textAlign: 'center', fontWeight: 600, fontSize: '0.813rem' }}>
                           {roleItem.count}
                         </span>
                         <button
                           type="button"
                           onClick={() => updateCrewRoleCount(idx, 1)}
                           style={{
-                            background: 'transparent',
+                            backgroundColor: 'transparent',
                             border: 'none',
                             color: 'var(--text-muted)',
-                            padding: '6px 10px',
+                            padding: '4px 8px',
                             cursor: 'pointer'
                           }}
                         >
-                          <Plus size={14} />
+                          <Plus size={12} />
                         </button>
                       </div>
 
@@ -558,15 +590,18 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                         type="button"
                         onClick={() => removeCrewRole(idx)}
                         style={{
-                          background: 'transparent',
+                          backgroundColor: 'transparent',
                           border: 'none',
-                          color: '#f43f5e',
-                          padding: '6px',
-                          cursor: 'pointer'
+                          color: 'var(--text-muted)',
+                          padding: '4px',
+                          cursor: 'pointer',
+                          borderRadius: 'var(--radius-xs)'
                         }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
                         title="Remove role"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   </div>
@@ -577,11 +612,11 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
 
           {/* Shift Schedule Section */}
           <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)' }}>
-            <label className="form-label" style={{ marginBottom: '14px' }}>
-              <Clock size={16} color="var(--crew-color)" />
-              Shift Timings & Working Hours
+            <label className="form-label" style={{ marginBottom: '12px' }}>
+              <Clock size={15} style={{ color: 'var(--crew-color)' }} />
+              <span>Shift Model & Working Hours</span>
             </label>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
               <div>
                 <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Shift Model</span>
                 <select
@@ -599,16 +634,16 @@ export const Step2CategoryDetails: React.FC<Step2Props> = ({
                     })
                   }
                 >
-                  <option value="morning">Morning Shift (e.g. 08:00 - 16:00)</option>
-                  <option value="evening">Evening Shift (e.g. 15:00 - 23:00)</option>
-                  <option value="night">Overnight / Teardown (22:00 - 06:00)</option>
-                  <option value="full_day">Full Day Production (10-14 hours)</option>
+                  <option value="morning">Morning Shift (08:00 - 16:00)</option>
+                  <option value="evening">Evening Shift (15:00 - 23:00)</option>
+                  <option value="night">Overnight Teardown (22:00 - 06:00)</option>
+                  <option value="full_day">Full Day Production (10-14h)</option>
                   <option value="split">Split Shifts (Setup + Teardown)</option>
                 </select>
               </div>
 
               <div>
-                <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Report Time</span>
+                <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Call / Report Time</span>
                 <input
                   type="time"
                   className="form-input"

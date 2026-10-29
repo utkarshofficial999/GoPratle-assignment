@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import {
   DollarSign,
-  Radio,
   Coffee,
   ShieldCheck,
   User,
@@ -110,14 +109,15 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
 
   return (
     <div className="animate-fade-in">
-      <div style={{ marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', marginBottom: '6px' }}>
+      {/* Header */}
+      <div style={{ marginBottom: '20px' }}>
+        <h1 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '4px' }}>
           Step 3: {category === 'planner' && 'Logistics, Compliance & Budget'}
           {category === 'performer' && 'Stage Rider, Hospitality & Fee'}
           {category === 'crew' && 'Gear, Perks & Compensation'}
-        </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-          Finalize technical specifications, hospitality riders, budget boundaries, and organizer contact details.
+        </h1>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+          Define operational logistics, rider provisions, budget range, and primary contact details.
         </p>
       </div>
 
@@ -125,16 +125,14 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
       {/* CASE A: PLANNER LOGISTICS & BUDGET                                        */}
       {/* ========================================================================= */}
       {category === 'planner' && (
-        <div className="glass-panel" style={{ padding: '28px', marginBottom: '24px', borderLeft: '4px solid var(--planner-color)' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '16px' }}>
+        <div className="card-panel" style={{ padding: '24px', marginBottom: '20px' }}>
+          <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '14px' }}>
             Setup Timelines & Logistics Scope
-          </h3>
+          </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px', marginBottom: '20px' }}>
             <div className="form-group" style={{ margin: 0 }}>
-              <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>
-                On-site Setup Days Prior
-              </span>
+              <label className="form-label">On-site Setup Days Required</label>
               <select
                 className="form-select"
                 value={formData.plannerDetails.setupDaysNeeded}
@@ -148,39 +146,41 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                 }
               >
                 <option value={1}>1 Day Prior (Standard Setup)</option>
-                <option value={2}>2 Days Prior (Heavy Staging & Truss)</option>
-                <option value={3}>3+ Days Prior (Mega Production / Expo)</option>
+                <option value={2}>2 Days Prior (Stage & Heavy Decor)</option>
+                <option value={3}>3+ Days Prior (Mega Production / Trussing)</option>
                 <option value={0}>Same Day Morning Only</option>
               </select>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>
-                <input
-                  type="checkbox"
-                  checked={formData.plannerDetails.cateringCoordination}
-                  onChange={(e) =>
-                    updateFormData({
-                      plannerDetails: {
-                        ...formData.plannerDetails,
-                        cateringCoordination: e.target.checked
-                      }
-                    })
-                  }
-                  style={{ width: '18px', height: '18px', accentColor: 'var(--planner-color)' }}
-                />
-                <span>Include Catering & F&B Tasting Management</span>
-              </label>
+            <div className="form-group" style={{ margin: 0 }}>
+              <label className="form-label">F&B & Menu Coordination</label>
+              <div style={{ marginTop: '8px' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
+                  <input
+                    type="checkbox"
+                    checked={formData.plannerDetails.cateringCoordination}
+                    onChange={(e) =>
+                      updateFormData({
+                        plannerDetails: {
+                          ...formData.plannerDetails,
+                          cateringCoordination: e.target.checked
+                        }
+                      })
+                    }
+                    style={{ width: '15px', height: '15px', accentColor: 'var(--primary)', cursor: 'pointer' }}
+                  />
+                  <span>Planner should manage catering vendor & tasting sessions</span>
+                </label>
+              </div>
             </div>
           </div>
 
-          <div className="form-group">
-            <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>
-              Permits, Compliance & Special Instructions
-            </span>
-            <textarea
-              className="form-textarea"
-              placeholder="e.g. Organizer requires Police NOC, Fire Safety Clearance, Sound limiter compliance past 10 PM"
+          <div className="form-group" style={{ marginBottom: '20px' }}>
+            <label className="form-label">Special Permits, NOCs & Compliance</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="e.g. Police NOC, Sound permit up to 10 PM, Fire safety clearance"
               value={formData.plannerDetails.specialRequirements}
               onChange={(e) =>
                 updateFormData({
@@ -193,19 +193,22 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
             />
           </div>
 
-          {/* Dedicated Planner Budget */}
+          {/* Planning Fee Budget */}
           <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)' }}>
-            <label className="form-label" style={{ marginBottom: '12px' }}>
-              <DollarSign size={16} color="var(--planner-color)" />
-              Dedicated Planning & Management Budget (INR ₹)
+            <label className="form-label" style={{ marginBottom: '6px' }}>
+              <DollarSign size={15} style={{ color: 'var(--planner-color)' }} />
+              <span>Dedicated Planning Fee Budget Range (₹)</span>
             </label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <p style={{ fontSize: '0.813rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+              Agency/consultant coordination fee (excluding raw third-party vendor expenses):
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
               <div>
                 <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Minimum Budget (₹)</span>
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="e.g. 150000"
+                  placeholder="e.g. 100000"
                   value={formData.plannerDetails.plannerBudget.min || ''}
                   onChange={(e) =>
                     updateFormData({
@@ -226,7 +229,7 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="e.g. 350000"
+                  placeholder="e.g. 250000"
                   value={formData.plannerDetails.plannerBudget.max || ''}
                   onChange={(e) =>
                     updateFormData({
@@ -247,19 +250,19 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* CASE B: PERFORMER STAGE RIDER & FEE                                      */}
+      {/* CASE B: PERFORMER STAGE & RIDERS                                          */}
       {/* ========================================================================= */}
       {category === 'performer' && (
-        <div className="glass-panel" style={{ padding: '28px', marginBottom: '24px', borderLeft: '4px solid var(--performer-color)' }}>
-          {/* Sound & Stage Tech */}
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '16px' }}>
-            <Volume2 size={18} color="var(--performer-color)" style={{ verticalAlign: 'middle', marginRight: '6px' }} />
-            Stage & Audio Technical Rider
-          </h3>
+        <div className="card-panel" style={{ padding: '24px', marginBottom: '20px' }}>
+          {/* Sound & Stage Technical Rider */}
+          <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '14px' }}>
+            <Volume2 size={16} style={{ color: 'var(--performer-color)', verticalAlign: 'middle', marginRight: '6px' }} />
+            Sound & Stage Technical Rider
+          </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '18px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px', marginBottom: '16px' }}>
             <div>
-              <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Stage Dimensions Needed</span>
+              <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Stage Footprint Needed</span>
               <select
                 className="form-select"
                 value={formData.performerDetails.soundAndStage.stageSizeNeeded}
@@ -275,14 +278,15 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                   })
                 }
               >
-                <option value="Compact (12x10 ft)">Compact (12x10 ft - Solo / Acoustic)</option>
-                <option value="Medium (16x12 ft)">Medium (16x12 ft - 4 Piece Band)</option>
-                <option value="Large (32x24 ft or larger)">Large (32x24 ft - Big Ensemble / Dance Troupe)</option>
+                <option value="Small (12x8 ft)">Small (12x8 ft) - Solo / Acoustic</option>
+                <option value="Medium (16x12 ft)">Medium (16x12 ft) - 4-piece Band</option>
+                <option value="Large (24x16 ft)">Large (24x16 ft) - Full Band / Troupe</option>
+                <option value="Concert Rig (32x24 ft)">Concert Rig (32x24 ft)</option>
               </select>
             </div>
 
             <div>
-              <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Vocal & Instrument Mics Needed</span>
+              <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Mics Needed</span>
               <input
                 type="number"
                 min={1}
@@ -304,8 +308,8 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginBottom: '18px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
               <input
                 type="checkbox"
                 checked={formData.performerDetails.soundAndStage.paSystemRequired}
@@ -320,12 +324,12 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                     }
                   })
                 }
-                style={{ width: '16px', height: '16px', accentColor: 'var(--performer-color)' }}
+                style={{ width: '15px', height: '15px', accentColor: 'var(--primary)', cursor: 'pointer' }}
               />
-              PA Sound System Provided by Organizer
+              <span>Organizer must provide full PA sound system</span>
             </label>
 
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
               <input
                 type="checkbox"
                 checked={formData.performerDetails.soundAndStage.inEarMonitors}
@@ -340,18 +344,18 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                     }
                   })
                 }
-                style={{ width: '16px', height: '16px', accentColor: 'var(--performer-color)' }}
+                style={{ width: '15px', height: '15px', accentColor: 'var(--primary)', cursor: 'pointer' }}
               />
-              In-Ear Monitor (IEM) Transmitters Required
+              <span>Wireless In-Ear Monitor (IEM) channels required</span>
             </label>
           </div>
 
-          <div className="form-group" style={{ marginBottom: '24px' }}>
-            <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Instruments & Gear Brought</span>
+          <div className="form-group" style={{ marginBottom: '20px' }}>
+            <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Backline & Instrument Notes</span>
             <input
               type="text"
               className="form-input"
-              placeholder="e.g. Roland Keyboard, Gibson Les Paul, Pioneer DJ Console, Acoustic Guitar"
+              placeholder="e.g. Drum kit required on-site, 2 DI boxes, Guitar amp (Fender/Marshall)"
               value={formData.performerDetails.soundAndStage.instrumentDetails}
               onChange={(e) =>
                 updateFormData({
@@ -367,14 +371,15 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
             />
           </div>
 
-          {/* Hospitality Rider */}
-          <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)', marginBottom: '24px' }}>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '12px' }}>
-              <Coffee size={16} color="var(--performer-color)" style={{ verticalAlign: 'middle', marginRight: '6px' }} />
-              Hospitality & Comfort Rider
-            </h4>
+          {/* Hospitality & Comfort Rider */}
+          <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)', marginBottom: '20px' }}>
+            <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '12px' }}>
+              <Coffee size={15} style={{ color: 'var(--performer-color)', verticalAlign: 'middle', marginRight: '6px' }} />
+              Hospitality & Travel Provisions
+            </h2>
+
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
                 <input
                   type="checkbox"
                   checked={formData.performerDetails.hospitality.greenRoomRequired}
@@ -389,12 +394,12 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                       }
                     })
                   }
-                  style={{ width: '16px', height: '16px', accentColor: 'var(--performer-color)' }}
+                  style={{ width: '15px', height: '15px', accentColor: 'var(--primary)', cursor: 'pointer' }}
                 />
-                Private AC Green Room
+                <span>Private Air-conditioned Green Room</span>
               </label>
 
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
                 <input
                   type="checkbox"
                   checked={formData.performerDetails.hospitality.mealsBeverages}
@@ -409,12 +414,12 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                       }
                     })
                   }
-                  style={{ width: '16px', height: '16px', accentColor: 'var(--performer-color)' }}
+                  style={{ width: '15px', height: '15px', accentColor: 'var(--primary)', cursor: 'pointer' }}
                 />
-                Hot Meals & Beverages
+                <span>Artist Meals & Refreshments</span>
               </label>
 
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
                 <input
                   type="checkbox"
                   checked={formData.performerDetails.hospitality.accommodationNeeded}
@@ -429,12 +434,12 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                       }
                     })
                   }
-                  style={{ width: '16px', height: '16px', accentColor: 'var(--performer-color)' }}
+                  style={{ width: '15px', height: '15px', accentColor: 'var(--primary)', cursor: 'pointer' }}
                 />
-                Hotel Stay (Outstation)
+                <span>Outstation Hotel Stay Provided</span>
               </label>
 
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
                 <input
                   type="checkbox"
                   checked={formData.performerDetails.hospitality.travelReimbursement}
@@ -449,34 +454,39 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                       }
                     })
                   }
-                  style={{ width: '16px', height: '16px', accentColor: 'var(--performer-color)' }}
+                  style={{ width: '15px', height: '15px', accentColor: 'var(--primary)', cursor: 'pointer' }}
                 />
-                Travel / Flight Support
+                <span>Flight / Local Travel Reimbursed</span>
               </label>
             </div>
           </div>
 
-          {/* Sample Links / Portfolio */}
-          <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)', marginBottom: '24px' }}>
-            <label className="form-label" style={{ marginBottom: '8px' }}>
-              <Link2 size={16} color="var(--performer-color)" />
-              Sample Video / Audio Links
+          {/* Sample Links */}
+          <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)', marginBottom: '20px' }}>
+            <label className="form-label" style={{ marginBottom: '6px' }}>
+              <Link2 size={15} style={{ color: 'var(--performer-color)' }} />
+              <span>Sample Audio / Video References</span>
             </label>
+            <p style={{ fontSize: '0.813rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+              Add links to past live performances or tracks you would like them to review:
+            </p>
+
             <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
               <input
                 type="url"
                 className="form-input"
-                placeholder="https://youtube.com/... or https://soundcloud.com/..."
+                placeholder="https://youtube.com/watch?v=... or SoundCloud link"
                 value={newSampleLink}
                 onChange={(e) => setNewSampleLink(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addSampleLink())}
               />
               <button
                 type="button"
                 onClick={addSampleLink}
                 className="btn btn-secondary"
-                style={{ padding: '0 16px', whiteSpace: 'nowrap' }}
+                style={{ flexShrink: 0 }}
               >
-                <Plus size={16} /> Add Link
+                <Plus size={14} /> Add
               </button>
             </div>
 
@@ -489,21 +499,29 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      background: 'rgba(13, 18, 30, 0.6)',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      border: '1px solid var(--border-subtle)'
+                      backgroundColor: 'var(--bg-subtle)',
+                      padding: '6px 12px',
+                      borderRadius: 'var(--radius-xs)',
+                      border: '1px solid var(--border-subtle)',
+                      fontSize: '0.813rem'
                     }}
                   >
-                    <span style={{ fontSize: '0.82rem', color: '#818cf8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '85%' }}>
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: 'var(--primary)', textDecoration: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '85%' }}
+                    >
                       {link}
-                    </span>
+                    </a>
                     <button
                       type="button"
                       onClick={() => removeSampleLink(idx)}
-                      style={{ background: 'transparent', border: 'none', color: '#f43f5e', cursor: 'pointer' }}
+                      style={{ backgroundColor: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size={13} />
                     </button>
                   </div>
                 ))}
@@ -513,17 +531,17 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
 
           {/* Fee Budget */}
           <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)' }}>
-            <label className="form-label" style={{ marginBottom: '12px' }}>
-              <DollarSign size={16} color="var(--performer-color)" />
-              Performer Honorarium / Budget Range (INR ₹)
+            <label className="form-label" style={{ marginBottom: '6px' }}>
+              <DollarSign size={15} style={{ color: 'var(--performer-color)' }} />
+              <span>Artist Performance Fee Budget Range (₹)</span>
             </label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
               <div>
                 <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Minimum Fee (₹)</span>
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="e.g. 100000"
+                  placeholder="e.g. 80000"
                   value={formData.performerDetails.feeBudget.min || ''}
                   onChange={(e) =>
                     updateFormData({
@@ -544,7 +562,7 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="e.g. 250000"
+                  placeholder="e.g. 150000"
                   value={formData.performerDetails.feeBudget.max || ''}
                   onChange={(e) =>
                     updateFormData({
@@ -568,15 +586,15 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
       {/* CASE C: CREW GEAR & LOGISTICS                                            */}
       {/* ========================================================================= */}
       {category === 'crew' && (
-        <div className="glass-panel" style={{ padding: '28px', marginBottom: '24px', borderLeft: '4px solid var(--crew-color)' }}>
+        <div className="card-panel" style={{ padding: '24px', marginBottom: '20px' }}>
           {/* Equipment Provisioning */}
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '16px' }}>
-            <Wrench size={18} color="var(--crew-color)" style={{ verticalAlign: 'middle', marginRight: '6px' }} />
+          <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '14px' }}>
+            <Wrench size={16} style={{ color: 'var(--crew-color)', verticalAlign: 'middle', marginRight: '6px' }} />
             Equipment & Tools Policy
-          </h3>
+          </h2>
 
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>
+          <div style={{ marginBottom: '18px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
               <input
                 type="checkbox"
                 checked={formData.crewDetails.equipment.provideOwnGear}
@@ -591,16 +609,14 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                     }
                   })
                 }
-                style={{ width: '16px', height: '16px', accentColor: 'var(--crew-color)' }}
+                style={{ width: '15px', height: '15px', accentColor: 'var(--primary)', cursor: 'pointer' }}
               />
-              Crew must bring their own professional toolkits / test gear (BYOE)
+              <span>Crew members must bring their own professional toolkits / personal gear</span>
             </label>
           </div>
 
-          <div className="form-group" style={{ marginBottom: '18px' }}>
-            <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>
-              Tools & Accessories Required
-            </span>
+          <div style={{ marginBottom: '20px' }}>
+            <span className="form-hint" style={{ marginBottom: '6px', display: 'block' }}>Required Tools & Safety Equipment:</span>
             <div className="chip-grid">
               {crewToolChips.map((tool) => {
                 const isSelected = formData.crewDetails.equipment.toolsRequired?.includes(tool);
@@ -609,7 +625,15 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                     key={tool}
                     onClick={() => toggleCrewTool(tool)}
                     className={`chip ${isSelected ? 'active' : ''}`}
-                    style={isSelected ? { background: 'rgba(245, 158, 11, 0.15)', borderColor: 'var(--crew-color)' } : {}}
+                    style={
+                      isSelected
+                        ? {
+                            backgroundColor: 'var(--crew-subtle)',
+                            borderColor: 'var(--crew-color)',
+                            color: 'var(--crew-color)'
+                          }
+                        : {}
+                    }
                   >
                     {tool}
                   </div>
@@ -620,54 +644,107 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
 
           {/* Dress Code & Uniform */}
           <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)', marginBottom: '20px' }}>
-            <label className="form-label" style={{ marginBottom: '12px' }}>
-              <Shirt size={16} color="var(--crew-color)" />
-              Dress Code & Uniform Standard
-            </label>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '10px' }}>
-              {[
-                { value: 'all_black', label: 'All Black (Standard Stage)' },
-                { value: 'formal', label: 'Formal / Suit & Tie' },
-                { value: 'smart_casual', label: 'Smart Casual / Polo' },
-                { value: 'branded_tshirt', label: 'Event Branded T-Shirt' },
-                { value: 'safety_gear', label: 'Safety Hi-Vis & Helmet' }
-              ].map((dc) => {
-                const isSelected = formData.crewDetails.dressCode === dc.value;
-                return (
-                  <div
-                    key={dc.value}
-                    onClick={() =>
-                      updateFormData({
-                        crewDetails: {
-                          ...formData.crewDetails,
-                          dressCode: dc.value as any
-                        }
-                      })
-                    }
-                    style={{
-                      padding: '10px',
-                      borderRadius: '8px',
-                      background: isSelected ? 'rgba(245, 158, 11, 0.15)' : 'var(--bg-dark-card)',
-                      border: isSelected ? '1px solid var(--crew-color)' : '1px solid var(--border-subtle)',
-                      textAlign: 'center',
-                      fontSize: '0.8rem',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      color: isSelected ? '#ffffff' : 'var(--text-muted)'
-                    }}
-                  >
-                    {dc.label}
-                  </div>
-                );
-              })}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label">
+                  <Shirt size={14} style={{ color: 'var(--crew-color)' }} />
+                  <span>Uniform / Dress Code</span>
+                </label>
+                <select
+                  className="form-select"
+                  value={formData.crewDetails.dressCode}
+                  onChange={(e) =>
+                    updateFormData({
+                      crewDetails: {
+                        ...formData.crewDetails,
+                        dressCode: e.target.value as any
+                      }
+                    })
+                  }
+                >
+                  <option value="all_black">Standard All-Black Production Attire</option>
+                  <option value="formal">Black Suit / Formal Corporate</option>
+                  <option value="smart_casual">Smart Casual Collared</option>
+                  <option value="branded_tee">Event Branded T-shirt (Provided on site)</option>
+                  <option value="safety_hi_vis">Hi-Vis Safety Vest & Hard Hat</option>
+                </select>
+              </div>
+
+              {/* Amenities */}
+              <div>
+                <label className="form-label" style={{ marginBottom: '8px' }}>
+                  Perks & Welfare
+                </label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
+                    <input
+                      type="checkbox"
+                      checked={formData.crewDetails.amenities.mealsProvided}
+                      onChange={(e) =>
+                        updateFormData({
+                          crewDetails: {
+                            ...formData.crewDetails,
+                            amenities: {
+                              ...formData.crewDetails.amenities,
+                              mealsProvided: e.target.checked
+                            }
+                          }
+                        })
+                      }
+                      style={{ width: '14px', height: '14px', accentColor: 'var(--primary)', cursor: 'pointer' }}
+                    />
+                    <span>Crew Meals & Bottled Water Provided</span>
+                  </label>
+
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
+                    <input
+                      type="checkbox"
+                      checked={formData.crewDetails.amenities.travelAllowance}
+                      onChange={(e) =>
+                        updateFormData({
+                          crewDetails: {
+                            ...formData.crewDetails,
+                            amenities: {
+                              ...formData.crewDetails.amenities,
+                              travelAllowance: e.target.checked
+                            }
+                          }
+                        })
+                      }
+                      style={{ width: '14px', height: '14px', accentColor: 'var(--primary)', cursor: 'pointer' }}
+                    />
+                    <span>Travel / Fuel Reimbursement Included</span>
+                  </label>
+
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.813rem', color: 'var(--text-body)' }}>
+                    <input
+                      type="checkbox"
+                      checked={formData.crewDetails.amenities.overtimePay}
+                      onChange={(e) =>
+                        updateFormData({
+                          crewDetails: {
+                            ...formData.crewDetails,
+                            amenities: {
+                              ...formData.crewDetails.amenities,
+                              overtimePay: e.target.checked
+                            }
+                          }
+                        })
+                      }
+                      style={{ width: '14px', height: '14px', accentColor: 'var(--primary)', cursor: 'pointer' }}
+                    />
+                    <span>Overtime Compensation for hours past wrap</span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Safety Certifications */}
+          {/* Certifications */}
           <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)', marginBottom: '20px' }}>
-            <label className="form-label" style={{ marginBottom: '10px' }}>
-              <ShieldCheck size={16} color="var(--crew-color)" />
-              Mandatory Safety Certifications
+            <label className="form-label" style={{ marginBottom: '6px' }}>
+              <ShieldCheck size={15} style={{ color: 'var(--crew-color)' }} />
+              <span>Safety Certifications Desired</span>
             </label>
             <div className="chip-grid">
               {crewCertChips.map((cert) => {
@@ -677,7 +754,15 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                     key={cert}
                     onClick={() => toggleCrewCert(cert)}
                     className={`chip ${isSelected ? 'active' : ''}`}
-                    style={isSelected ? { background: 'rgba(245, 158, 11, 0.15)', borderColor: 'var(--crew-color)' } : {}}
+                    style={
+                      isSelected
+                        ? {
+                            backgroundColor: 'var(--crew-subtle)',
+                            borderColor: 'var(--crew-color)',
+                            color: 'var(--crew-color)'
+                          }
+                        : {}
+                    }
                   >
                     {cert}
                   </div>
@@ -686,13 +771,13 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
             </div>
           </div>
 
-          {/* Crew Budget Calculation */}
+          {/* Compensation Structure */}
           <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-subtle)' }}>
-            <label className="form-label" style={{ marginBottom: '12px' }}>
-              <DollarSign size={16} color="var(--crew-color)" />
-              Crew Compensation Model
+            <label className="form-label" style={{ marginBottom: '8px' }}>
+              <DollarSign size={15} style={{ color: 'var(--crew-color)' }} />
+              <span>Crew Rates & Budget Calculator</span>
             </label>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
               <div>
                 <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Rate Structure</span>
                 <select
@@ -717,9 +802,7 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
               </div>
 
               <div>
-                <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>
-                  Rate per Crew Member (₹)
-                </span>
+                <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Rate per Member (₹)</span>
                 <input
                   type="number"
                   className="form-input"
@@ -742,21 +825,25 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
               </div>
 
               <div>
-                <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>
-                  Calculated Total Budget
-                </span>
-                <div style={{
-                  padding: '12px 16px',
-                  background: 'rgba(245, 158, 11, 0.1)',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid rgba(245, 158, 11, 0.3)',
-                  fontWeight: 700,
-                  color: 'var(--crew-color)',
-                  fontSize: '1rem'
-                }}>
-                  ₹ {estimatedTotalCrewBudget.toLocaleString('en-IN')}{' '}
-                  <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-dim)' }}>
-                    ({totalCrewCount} crew members)
+                <span className="form-hint" style={{ marginBottom: '4px', display: 'block' }}>Total Estimated Budget (₹)</span>
+                <div
+                  style={{
+                    padding: '8px 12px',
+                    backgroundColor: 'var(--bg-subtle)',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--border-subtle)',
+                    fontWeight: 600,
+                    color: 'var(--text-main)',
+                    fontSize: '0.938rem',
+                    height: '38px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <span>₹ {estimatedTotalCrewBudget.toLocaleString('en-IN')}</span>
+                  <span style={{ fontSize: '0.688rem', fontWeight: 500, color: 'var(--text-muted)' }}>
+                    ({totalCrewCount} crew)
                   </span>
                 </div>
               </div>
@@ -766,21 +853,21 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* UNIVERSAL ORGANIZER INFORMATION CARD                                      */}
+      {/* UNIVERSAL ORGANIZER CONTACT CARD                                          */}
       {/* ========================================================================= */}
-      <div className="glass-panel" style={{ padding: '28px' }}>
-        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#ffffff', marginBottom: '6px' }}>
+      <div className="card-panel" style={{ padding: '24px' }}>
+        <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '4px' }}>
           Organizer & Point of Contact
-        </h3>
-        <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '18px' }}>
+        </h2>
+        <p style={{ fontSize: '0.813rem', color: 'var(--text-muted)', marginBottom: '16px' }}>
           This information will be associated with the requirement so applicants and agency partners can reach out.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
           <div className="form-group" style={{ margin: 0 }}>
             <label className="form-label">
-              <User size={15} color="#818cf8" />
-              Contact Name <span className="required">*</span>
+              <User size={14} style={{ color: 'var(--text-muted)' }} />
+              <span>Contact Name</span> <span className="required">*</span>
             </label>
             <input
               type="text"
@@ -798,8 +885,8 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
 
           <div className="form-group" style={{ margin: 0 }}>
             <label className="form-label">
-              <Mail size={15} color="#818cf8" />
-              Email Address <span className="required">*</span>
+              <Mail size={14} style={{ color: 'var(--text-muted)' }} />
+              <span>Email Address</span> <span className="required">*</span>
             </label>
             <input
               type="email"
@@ -817,8 +904,8 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
 
           <div className="form-group" style={{ margin: 0 }}>
             <label className="form-label">
-              <Phone size={15} color="#818cf8" />
-              Phone / WhatsApp
+              <Phone size={14} style={{ color: 'var(--text-muted)' }} />
+              <span>Phone / WhatsApp</span>
             </label>
             <input
               type="tel"
@@ -835,8 +922,8 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
 
           <div className="form-group" style={{ margin: 0 }}>
             <label className="form-label">
-              <Briefcase size={15} color="#818cf8" />
-              Organization / Client Name
+              <Briefcase size={14} style={{ color: 'var(--text-muted)' }} />
+              <span>Organization / Client</span>
             </label>
             <input
               type="text"

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Calendar, UserCheck, Sliders, CheckCircle2 } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { EventCategory } from '../types/requirement';
 
 interface ProgressBarProps {
@@ -24,9 +24,9 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       case 'planner':
         return 'Planning Scope';
       case 'performer':
-        return 'Performance & Genre';
+        return 'Performance Details';
       case 'crew':
-        return 'Crew Roles & Scale';
+        return 'Crew Roles';
       default:
         return 'Role Details';
     }
@@ -37,144 +37,104 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       case 'planner':
         return 'Logistics & Budget';
       case 'performer':
-        return 'Stage & Hospitality';
+        return 'Stage & Riders';
       case 'crew':
-        return 'Gear & Shift Timings';
+        return 'Shift & Compensation';
       default:
         return 'Logistics & Budget';
     }
   };
 
   const steps = [
-    { number: 1, label: 'Event Basics', icon: Calendar, subtitle: 'Type, Date, Location & Category' },
-    { number: 2, label: getStep2Title(), icon: UserCheck, subtitle: `Adaptive to ${category}` },
-    { number: 3, label: getStep3Title(), icon: Sliders, subtitle: 'Rider, Budget & Specs' },
-    { number: 4, label: 'Review & Submit', icon: CheckCircle2, subtitle: 'Verify & Save to MongoDB' }
+    { number: 1, label: 'Event Basics' },
+    { number: 2, label: getStep2Title() },
+    { number: 3, label: getStep3Title() },
+    { number: 4, label: 'Review & Submit' }
   ];
 
-  const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-
   return (
-    <div style={{ marginBottom: '32px' }}>
-      {/* Progress Track Line */}
-      <div style={{ position: 'relative', marginBottom: '20px' }}>
-        <div style={{
-          height: '4px',
-          width: '100%',
-          background: 'rgba(255, 255, 255, 0.08)',
-          borderRadius: '9999px',
-          position: 'absolute',
-          top: '20px',
-          left: 0,
-          zIndex: 1
-        }} />
-        <div style={{
-          height: '4px',
-          width: `${progressPercentage}%`,
-          background: 'linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #10b981 100%)',
-          borderRadius: '9999px',
-          position: 'absolute',
-          top: '20px',
-          left: 0,
-          zIndex: 2,
-          transition: 'width 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
-        }} />
-
-        {/* Step Circles & Labels */}
-        <div style={{
+    <div style={{ marginBottom: '28px' }}>
+      <div
+        style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          position: 'relative',
-          zIndex: 3
-        }}>
-          {steps.map((step) => {
-            const Icon = step.icon;
-            const isCompleted = currentStep > step.number;
-            const isCurrent = currentStep === step.number;
-            const isClickable = step.number <= maxReachedStep;
+          gap: '8px',
+          alignItems: 'center'
+        }}
+      >
+        {steps.map((step) => {
+          const isCompleted = currentStep > step.number;
+          const isCurrent = currentStep === step.number;
+          const isClickable = step.number <= maxReachedStep;
 
-            let circleBg = 'var(--bg-dark-card)';
-            let circleBorder = 'var(--border-subtle)';
-            let circleColor = 'var(--text-dim)';
-
-            if (isCompleted) {
-              circleBg = '#10b981';
-              circleBorder = '#10b981';
-              circleColor = '#ffffff';
-            } else if (isCurrent) {
-              circleBg = 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)';
-              circleBorder = '#818cf8';
-              circleColor = '#ffffff';
-            }
-
-            return (
+          return (
+            <div
+              key={step.number}
+              onClick={() => isClickable && onStepClick(step.number)}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                cursor: isClickable ? 'pointer' : 'default',
+                opacity: isClickable ? 1 : 0.6,
+                transition: 'opacity var(--transition-fast)'
+              }}
+            >
+              {/* Step indicator bar */}
               <div
-                key={step.number}
-                onClick={() => isClickable && onStepClick(step.number)}
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  cursor: isClickable ? 'pointer' : 'default',
-                  opacity: isClickable ? 1 : 0.65,
-                  transition: 'transform 0.2s ease',
-                  padding: '0 8px'
+                  height: '3px',
+                  borderRadius: '2px',
+                  backgroundColor: isCompleted
+                    ? 'var(--primary)'
+                    : isCurrent
+                    ? 'var(--primary)'
+                    : 'var(--border-subtle)',
+                  transition: 'background-color var(--transition-normal)'
                 }}
-              >
-                {/* Step Icon Badge */}
-                <div
+              />
+
+              {/* Step label row */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span
                   style={{
-                    width: '42px',
-                    height: '42px',
+                    width: '18px',
+                    height: '18px',
                     borderRadius: '50%',
-                    background: circleBg,
-                    border: `2px solid ${circleBorder}`,
-                    color: circleColor,
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginBottom: '10px',
-                    boxShadow: isCurrent ? '0 0 18px rgba(99, 102, 241, 0.45)' : 'none',
-                    transition: 'all 0.3s ease'
+                    fontSize: '0.688rem',
+                    fontWeight: 600,
+                    backgroundColor: isCompleted
+                      ? 'var(--primary)'
+                      : isCurrent
+                      ? 'var(--text-main)'
+                      : 'var(--bg-subtle)',
+                    color: isCompleted || isCurrent ? '#ffffff' : 'var(--text-muted)',
+                    border: isCompleted || isCurrent ? 'none' : '1px solid var(--border-default)',
+                    flexShrink: 0
                   }}
                 >
-                  <Icon size={18} />
-                </div>
-
-                {/* Step Indicator Text */}
-                <span style={{
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  color: isCurrent ? '#818cf8' : 'var(--text-dim)',
-                  marginBottom: '2px'
-                }}>
-                  Step 0{step.number}
+                  {isCompleted ? <Check size={11} strokeWidth={2.5} /> : step.number}
                 </span>
 
-                <span style={{
-                  fontSize: '0.875rem',
-                  fontWeight: isCurrent ? 700 : 600,
-                  color: isCurrent ? '#ffffff' : isCompleted ? 'var(--text-main)' : 'var(--text-muted)',
-                  lineHeight: 1.2
-                }}>
+                <span
+                  style={{
+                    fontSize: '0.813rem',
+                    fontWeight: isCurrent ? 600 : 500,
+                    color: isCurrent ? 'var(--text-main)' : isCompleted ? 'var(--text-body)' : 'var(--text-muted)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}
+                >
                   {step.label}
                 </span>
-
-                <span style={{
-                  fontSize: '0.7rem',
-                  color: 'var(--text-dim)',
-                  marginTop: '3px',
-                  display: 'none'
-                }} className="step-subtitle">
-                  {step.subtitle}
-                </span>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

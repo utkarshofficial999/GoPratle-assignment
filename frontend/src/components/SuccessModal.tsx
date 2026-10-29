@@ -7,8 +7,7 @@ import {
   Check,
   ArrowRight,
   PlusCircle,
-  Database,
-  ExternalLink
+  Database
 } from 'lucide-react';
 import { RequirementFormData } from '../types/requirement';
 
@@ -43,8 +42,8 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(5, 7, 12, 0.85)',
-        backdropFilter: 'blur(12px)',
+        backgroundColor: 'rgba(15, 23, 42, 0.45)',
+        backdropFilter: 'blur(4px)',
         zIndex: 100,
         display: 'flex',
         alignItems: 'center',
@@ -53,98 +52,106 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
       }}
     >
       <div
-        className="glass-panel animate-fade-in"
+        className="animate-fade-in"
         style={{
-          maxWidth: '560px',
+          maxWidth: '480px',
           width: '100%',
-          padding: '36px',
-          textAlign: 'center',
-          border: '1px solid rgba(16, 185, 129, 0.3)',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(16, 185, 129, 0.2)'
+          backgroundColor: '#ffffff',
+          borderRadius: 'var(--radius-lg)',
+          border: '1px solid var(--border-subtle)',
+          boxShadow: 'var(--shadow-modal)',
+          padding: '28px',
+          textAlign: 'center'
         }}
       >
-        {/* Animated Checkmark Icon */}
+        {/* Success Icon */}
         <div
           style={{
-            width: '68px',
-            height: '68px',
+            width: '44px',
+            height: '44px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+            backgroundColor: 'var(--planner-subtle)',
+            color: 'var(--planner-color)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 20px auto',
-            boxShadow: '0 6px 25px rgba(16, 185, 129, 0.45)'
+            margin: '0 auto 16px auto',
+            border: '1px solid var(--planner-border)'
           }}
         >
-          <CheckCircle2 size={36} color="#ffffff" strokeWidth={2.5} />
+          <CheckCircle2 size={24} strokeWidth={2} />
         </div>
 
-        <h2 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px' }}>
-          Requirement Successfully Posted!
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '6px' }}>
+          Requirement Successfully Posted
         </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '24px' }}>
-          Your requirement for <strong style={{ color: '#ffffff' }}>{requirement.title}</strong> has been committed to MongoDB and categorized under{' '}
-          <span className={`badge badge-${category}`} style={{ fontSize: '0.78rem', margin: '0 4px' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '20px' }}>
+          Your requirement for <strong style={{ color: 'var(--text-main)' }}>{requirement.title}</strong> has been saved and categorized under{' '}
+          <span className={`badge badge-${category}`} style={{ fontSize: '0.75rem', margin: '0 2px' }}>
             {category.toUpperCase()}
           </span>
         </p>
 
-        {/* Unique Generated Identifier Card */}
+        {/* Code Box */}
         <div
           style={{
-            background: 'rgba(10, 13, 20, 0.75)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--radius-md)',
-            padding: '16px 20px',
-            marginBottom: '26px',
+            backgroundColor: 'var(--bg-subtle)',
+            border: '1px solid var(--border-default)',
+            borderRadius: 'var(--radius-sm)',
+            padding: '12px 16px',
+            marginBottom: '20px',
             textAlign: 'left'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>
-              Official Requirement Code
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <span style={{ fontSize: '0.688rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
+              Requirement Identifier
             </span>
             <button
               onClick={handleCopyCode}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '5px',
-                background: 'transparent',
+                gap: '4px',
+                backgroundColor: 'transparent',
                 border: 'none',
-                color: copied ? '#10b981' : 'var(--text-muted)',
-                fontSize: '0.78rem',
-                cursor: 'pointer'
+                color: copied ? 'var(--planner-color)' : 'var(--text-muted)',
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+                fontWeight: 500
               }}
             >
-              {copied ? <Check size={13} /> : <Copy size={13} />}
-              {copied ? 'Copied!' : 'Copy Code'}
+              {copied ? <Check size={12} /> : <Copy size={12} />}
+              {copied ? 'Copied' : 'Copy'}
             </button>
           </div>
 
-          <div style={{
-            fontSize: '1.3rem',
-            fontWeight: 800,
-            fontFamily: 'JetBrains Mono, monospace',
-            color: '#38bdf8',
-            letterSpacing: '0.04em'
-          }}>
-            {requirement.requirementCode || 'GP-REQ-2026-PENDING'}
+          <div
+            style={{
+              fontSize: '1.125rem',
+              fontWeight: 700,
+              fontFamily: 'JetBrains Mono, monospace',
+              color: 'var(--text-main)',
+              letterSpacing: '0.02em'
+            }}
+          >
+            {requirement.requirementCode || 'GP-REQ-2026-SAVED'}
           </div>
 
-          <div style={{
-            marginTop: '10px',
-            paddingTop: '8px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: '0.72rem',
-            color: 'var(--text-dim)'
-          }}>
+          <div
+            style={{
+              marginTop: '8px',
+              paddingTop: '6px',
+              borderTop: '1px solid var(--border-subtle)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              fontSize: '0.688rem',
+              color: 'var(--text-dim)'
+            }}
+          >
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Database size={12} color="#10b981" /> MongoDB Record ID:
+              <Database size={11} style={{ color: 'var(--text-muted)' }} /> MongoDB ID:
             </span>
             <span style={{ fontFamily: 'monospace' }}>
               {requirement._id || 'Generated'}
@@ -152,24 +159,24 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
           </div>
         </div>
 
-        {/* Modal Actions */}
-        <div style={{ display: 'flex', gap: '12px' }}>
+        {/* Actions */}
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button
             onClick={onPostAnother}
             className="btn btn-secondary"
-            style={{ flex: 1, padding: '12px' }}
+            style={{ flex: 1, padding: '8px 14px' }}
           >
-            <PlusCircle size={16} />
+            <PlusCircle size={15} />
             Post Another
           </button>
 
           <button
             onClick={onViewInExplorer}
             className="btn btn-primary"
-            style={{ flex: 1.2, padding: '12px' }}
+            style={{ flex: 1.2, padding: '8px 14px' }}
           >
             <span>View Requirements</span>
-            <ArrowRight size={16} />
+            <ArrowRight size={15} />
           </button>
         </div>
       </div>
