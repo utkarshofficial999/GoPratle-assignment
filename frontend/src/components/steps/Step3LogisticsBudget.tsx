@@ -294,7 +294,7 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                     performerDetails: {
                       ...formData.performerDetails,
                       soundAndStage: {
-                        ...formData.performerDetails,
+                        ...formData.performerDetails.soundAndStage,
                         micCount: parseInt(e.target.value) || 1
                       }
                     }
@@ -551,7 +551,7 @@ export const Step3LogisticsBudget: React.FC<Step3Props> = ({
                       performerDetails: {
                         ...formData.performerDetails,
                         feeBudget: {
-                          ...formData.performerDetails,
+                          ...formData.performerDetails.feeBudget,
                           max: parseInt(e.target.value) || 0
                         }
                       }
