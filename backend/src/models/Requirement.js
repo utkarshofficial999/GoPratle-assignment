@@ -181,14 +181,13 @@ const RequirementSchema = new mongoose.Schema(
 );
 
 // Generate unique readable requirement code before saving
-RequirementSchema.pre('save', function (next) {
+RequirementSchema.pre('save', function () {
   if (!this.requirementCode) {
     const year = new Date().getFullYear();
     const randomHex = Math.random().toString(36).substring(2, 6).toUpperCase();
     const prefix = this.category ? this.category.substring(0, 3).toUpperCase() : 'REQ';
     this.requirementCode = `GP-${prefix}-${year}-${randomHex}`;
   }
-  next();
 });
 
 const MongooseRequirement = mongoose.model('Requirement', RequirementSchema);
