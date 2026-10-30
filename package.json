@@ -2,7 +2,10 @@
   "name": "gopratle-requirement-flow",
   "version": "1.0.0",
   "description": "Full-Stack Requirement Posting Flow with Adaptive Multi-Step Wizard for Event Planners, Performers, and Crew",
+  "main": "backend/src/server.js",
   "scripts": {
+    "start": "cd backend && npm start",
+    "build": "cd backend && npm install",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
     "install:all": "npm --prefix backend install && npm --prefix frontend install"
